@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>未成年人司法影视研究数据库</title>
+  <meta name="description" content="单页滚动 · 苹果公司风格 · 叙事视角分类 · 作品库与技巧库 · 豆瓣校对工作流" />
+  <style>
+    /* ====== Apple-esque baseline ====== */
+    :root{
+      --bg: #0b0b0c;
+      --bg-soft: #0f0f11;
+      --card: #111113;
+      --card-2: #121315;
+      --text: #f5f6f7;
+      --muted: #a2a6ad;
+      --tint: #0a84ff;
+      --ok: #32d74b;
+      --warn: #ffd60a;
+      --bad: #ff453a;
+      --glass: rgba(17,17,19,0.6);
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 10px 30px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.02) inset;
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+      --radius-xs: 8px;
+      --gap-xl: clamp(28px, 5vw, 48px);
+      --gap-lg: clamp(22px, 3.6vw, 36px);
+      --gap-md: clamp(16px, 2.4vw, 24px);
+      --gap-sm: 12px;
+      --gap-xs: 8px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 70% -10%, #152236 0%, #0e1014 55%, var(--bg) 100%);
+      font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      line-height:1.6;
+      letter-spacing:.2px;
+      scroll-behavior:smooth;
+    }
+    a{color:var(--tint); text-decoration:none}
+    .container{width:min(1240px, 92vw); margin:0 auto;}
+    /* ====== Frosted Nav ====== */
+    .nav{
+      position:sticky; top:0; z-index:90;
+      backdrop-filter: saturate(180%) blur(18px);
+      background: linear-gradient(180deg, rgba(10,10,12,0.85), rgba(10,10,12,0.55));
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner{
+      display:flex; align-items:center; gap:12px;
+      padding:10px min(24px, 4vw);
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; padding:6px 10px; border-radius:999px;
+    }
+    .brand svg{height:24px; width:24px}
+    .brand .title{font-weight:700; letter-spacing:.2px}
+    .nav-actions{margin-left:auto; display:flex; gap:10px; align-items:center;}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid var(--border);
+      background:var(--glass); color:var(--text);
+      padding:8px 12px; border-radius:999px; cursor:pointer;
+      transition: all .25s ease;
+    }
+    .chip:hover{transform: translateY(-1px);}
+    .chip .dot{width:9px; height:9px; border-radius:999px; background:var(--tint); box-shadow:0 0 0 4px rgba(10,132,255,0.15)}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:12px;
+      background:linear-gradient(180deg, #1a1c1f, #121316);
+      border:1px solid var(--border);
+      box-shadow: var(--shadow);
+      color:var(--text); cursor:pointer;
+      transition: all .25s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:linear-gradient(180deg, #0a84ff, #0363c9); border-color:rgba(255,255,255,0.08)}
+    .btn.ghost{background:transparent}
+    input[type="search"]{
+      appearance:none; border:1px solid var(--border);
+      background:#0f1113; color:var(--text);
+      padding:10px 12px; border-radius:12px; width:260px;
+    }
+    /* ====== Hero ====== */
+    .hero{
+      padding: clamp(40px, 10vw, 120px) 0 20px;
+    }
+    .hero h1{
+      font-size: clamp(28px, 5vw, 56px);
+      line-height:1.08;
+      margin:0 0 12px;
+      letter-spacing:-.2px;
+      font-weight:800;
+    }
+    .hero .byline{
+      display:block;
+      font-weight:700;
+      color:#cfd6df;
+      margin-top:8px;
+      font-size: clamp(16px, 2vw, 22px);
+      letter-spacing:.2px;
+    }
+    .hero .sub{
+      color:var(--muted);
+      font-size: clamp(14px, 1.8vw, 18px);
+      max-width: 900px;
+    }
+    .hero .meta{
+      display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;
+    }
+    .hero .meta .pill{
+      padding:8px 12px; border-radius:999px;
+      background:linear-gradient(180deg, #17191c, #111316);
+      border:1px solid var(--border);
+      color:var(--muted);
+      font-size:12px;
+    }
+    /* ====== Category Grid (Level 1) ====== */
+    .section{
+      padding: 24px 0 10px;
+    }
+    .section h2{
+      font-size: clamp(22px, 3vw, 30px);
+      margin: 0 0 14px;
+      font-weight:800;
+      letter-spacing:-.2px;
+    }
+    .cats{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--gap-md);
+    }
+    .cat{
+      padding:18px; border-radius:var(--radius-xl);
+      background:linear-gradient(180deg, #14161a, #101114);
+      border:1px solid var(--border);
+      box-shadow: var(--shadow);
+      position:relative; overflow:hidden; cursor:pointer;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .cat:hover{ transform: translateY(-4px); border-color: rgba(255,255,255,0.16); }
+    .cat .name{ font-size:18px; font-weight:700; }
+    .cat .desc{ font-size:12px; color:var(--muted); margin-top:6px; min-height: 44px;}
+    .cat .count{ position:absolute; top:12px; right:12px; font-size:12px; color:var(--muted); }
+    .cat svg{ position:absolute; right:-40px; bottom:-40px; width:160px; height:160px; opacity:.08; }
+    /* ====== Films List (Level 2) ====== */
+    .films{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: var(--gap-md); }
+    .film{
+      display:flex; flex-direction:column; gap:12px; padding:14px;
+      background: linear-gradient(180deg, var(--card), var(--card-2));
+      border:1px solid var(--border); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow); cursor:pointer;
+      transition: transform .25s ease, border-color .25s ease;
+      position:relative; overflow:hidden;
+    }
+    .film:hover{ transform: translateY(-3px); border-color: rgba(255,255,255,0.16); }
+    .film .badge{
+      position:absolute; top:10px; left:10px; font-size:11px; color:#fff;
+      padding:4px 8px; border-radius:8px; background: #333; border:1px solid var(--border);
+      opacity:.9;
+    }
+    .film .badge.wait{ background: linear-gradient(180deg, #30240a, #241b06); }
+    .film .badge.ok{ background: linear-gradient(180deg, #0f2d17, #0c2212); }
+    .film .title{ font-weight:800; line-height:1.3; }
+    .film .meta{ color:var(--muted); font-size:12px; display:flex; gap:10px; flex-wrap:wrap; }
+    .film .tags{display:flex; gap:6px; flex-wrap:wrap}
+    .tag{ font-size:11px; color:var(--muted); border:1px solid var(--border); padding:4px 8px; border-radius:999px; }
+    .film .desc{ font-size:13px; color:#d0d3d9; }
+    /* ====== Slideovers (Level 2 & Level 3) ====== */
+    .slideover{
+      position: fixed; inset: 0 0 0 auto; width:min(720px, 92vw);
+      background: radial-gradient(1000px 600px at 100% 0%, #1b2332, #0f1114 40%, #0b0c0e 100%);
+      transform: translateX(100%); transition: transform .35s ease; z-index: 100;
+      border-left:1px solid var(--border);
+      display:flex; flex-direction:column; max-height: 100dvh;
+    }
+    .slideover.open{ transform: translateX(0); }
+    .slide-header{
+      position:sticky; top:0; z-index:2;
+      backdrop-filter: saturate(180%) blur(18px);
+      background: linear-gradient(180deg, rgba(10,12,16,0.9), rgba(10,12,16,0.6));
+      border-bottom:1px solid var(--border);
+      padding:12px 16px; display:flex; align-items:center; gap:10px;
+    }
+    .slide-title{ font-weight:800; font-size:18px; margin-right:auto; }
+    .slide-body{ overflow:auto; padding: 16px 18px 28px; }
+    .kv{ display:flex; gap:16px; flex-wrap:wrap; }
+    .kv .kvbox{
+      flex:1; min-width:220px;
+      background: linear-gradient(180deg, #15171a, #101214);
+      border:1px solid var(--border); border-radius: 14px;
+      padding:12px; color:var(--muted);
+    }
+    .kv .kvbox .k{ font-size:12px; color:#9aa0a8 }
+    .kv .kvbox .v{ font-size:14px; color:var(--text); margin-top:4px; }
+    .divider{ height:1px; background:var(--border); margin:16px 0; }
+    .h3{ font-size:14px; font-weight:800; letter-spacing:.2px; color:#cfd6df; margin: 12px 0 8px; }
+    .bullets{ display:grid; gap:8px; }
+    .bullets .li{
+      padding:10px 12px; background: linear-gradient(180deg, #14161a, #0f1113);
+      border:1px solid var(--border); border-radius: 12px;
+      color:#d8dde5; font-size:13px;
+    }
+    .slideover .toolbar{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+    .btn.small{ padding:8px 10px; border-radius:10px; font-size:12px; }
+    .pill-flag{ padding:6px 8px; border-radius:8px; font-size:11px; border:1px solid var(--border); color:var(--muted); background:#0f1113 }
+    /* ====== Verify Drawer ====== */
+    .verify{
+      position: fixed; inset: auto 0 0 0; height: 44vh;
+      background: linear-gradient(180deg, #0d1013, #0b0c0d);
+      border-top:1px solid var(--border);
+      transform: translateY(100%); transition: transform .35s ease; z-index: 95;
+    }
+    .verify.open{ transform: translateY(0); }
+    .verify-head{ padding:10px 16px; display:flex; gap:10px; align-items:center; }
+    .verify-body{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 12px; padding: 0 16px 16px; }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .field label{ font-size:12px; color:var(--muted) }
+    .field input, .field textarea, .field select{
+      background:#0f1113; border:1px solid var(--border); color:var(--text);
+      padding:10px 10px; border-radius: 10px; width:100%;
+      font-size:14px;
+    }
+    .field textarea{ min-height:80px; resize:vertical }
+    .muted{ color:var(--muted) }
+    /* ====== Footer ====== */
+    footer{ padding: 40px 0; color:var(--muted); text-align:center; font-size:12px; }
+    .grid{ display:grid; gap: var(--gap-md); }
+    .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px; border:1px solid var(--border); background:#121418; padding:2px 6px; border-radius:6px; color:#d8dde5}
+    /* Tiny helpers */
+    .hide{ display:none !important }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner container">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2c3 2.2 4.5 4 5 6.5.6 2.7-.3 5.6-2.5 7.9-2.2 2.3-5.3 3.5-8.2 3.3 2 2 5 3.7 8.5 2.8 4.6-1.1 8.5-5.7 8.5-11.2C23 5.6 18.2 1 12 1 9 1 6.3 2.1 4.3 3.9 6.5 4 9 3.1 12 2z" stroke-width="0.6"/>
+        </svg>
+        <div class="title">未成年人司法影视研究数据库</div>
+      </div>
+      <div class="nav-actions">
+        <span class="chip" id="toggleVerify"><span class="dot"></span>豆瓣校对模式</span>
+        <input id="search" type="search" placeholder="搜索片名 / 关键词…" />
+        <button class="btn ghost" id="exportBtn">导出JSON</button>
+        <label class="btn ghost" for="importFile">导入JSON</label>
+        <input id="importFile" type="file" accept="application/json" class="hide" />
+        <button class="btn primary" id="scrollCats">查看分类</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero container" id="top">
+    <h1>未成年人司法影视研究数据库<br/><span class="byline">作者：Dr.Kurt</span></h1>
+    <div class="sub">
+      本站以<strong>叙事视角</strong>为主线，将“检察/法庭”“性侵与保护”“青少年创伤与治愈”等相关作品统一纳入研究库。
+      采用单页滚动与分级交互：<span class="kbd">Level 1</span> 分类 →
+      <span class="kbd">Level 2</span> 作品信息/爆款原因/视角 →
+      <span class="kbd">Level 3</span> 值得学习的技巧。
+      <br/>
+      <em class="muted">数据初始来自用户提供文档，中文名与出品日期支持在“豆瓣校对模式”中人工校对并保存到本地（localStorage），亦可导入/导出JSON。</em>
+    </div>
+    <div class="meta">
+      <div class="pill">风格：Apple 设计语言 · 极简 · 玻璃拟态</div>
+      <div class="pill">交互：单页滚动 · 点击展开 · 侧滑层</div>
+      <div class="pill">工作流：豆瓣搜索 → 手动校对 → 标记已校对</div>
+    </div>
+  </header>
+
+  <!-- Level 1: Categories -->
+  <section class="section container" id="categories">
+    <h2>按叙事视角分类（Level 1）</h2>
+    <div class="cats" id="catGrid"></div>
+  </section>
+
+  <!-- Level 2: Lists per category -->
+  <section class="section container" id="lists"></section>
+
+  <!-- Slideover: Work (Level 2) -->
+  <aside class="slideover" id="workPanel" aria-hidden="true" aria-label="作品详情">
+    <div class="slide-header">
+      <div class="slide-title" id="workTitle">作品</div>
+      <div class="toolbar">
+        <a class="btn small" id="doubanLink" href="#" target="_blank" rel="noopener">豆瓣搜索</a>
+        <button class="btn small" id="copyLink">复制作品锚点</button>
+        <span id="verifyFlag" class="pill-flag">待校对</span>
+      </div>
+      <button class="btn small" id="closeWork">关闭</button>
+    </div>
+    <div class="slide-body">
+      <div class="kv" id="workKv"></div>
+      <div class="divider"></div>
+      <div class="h3">简介</div>
+      <div id="workSynopsis" class="muted"></div>
+      <div class="divider"></div>
+      <div class="grid">
+        <div>
+          <div class="h3">爆款原因</div>
+          <div id="workBoom" class="bullets"></div>
+        </div>
+        <div>
+          <div class="h3">优点</div>
+          <div id="workPros" class="bullets"></div>
+        </div>
+        <div>
+          <div class="h3">缺点</div>
+          <div id="workCons" class="bullets"></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="h3">叙事视角</div>
+      <div id="workPersp" class="tags"></div>
+      <div class="toolbar">
+        <button class="btn primary" id="openSkills">打开 Level 3：值得学习的技巧</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Slideover: Skills (Level 3) -->
+  <aside class="slideover" id="skillPanel" aria-hidden="true" aria-label="技巧库">
+    <div class="slide-header">
+      <div class="slide-title">值得学习的技巧</div>
+      <div class="toolbar">
+        <button class="btn small" id="collapseAll">折叠全部</button>
+        <button class="btn small" id="expandAll">展开全部</button>
+      </div>
+      <button class="btn small" id="closeSkill">关闭</button>
+    </div>
+    <div class="slide-body" id="skillBody"></div>
+  </aside>
+
+  <!-- Verify Drawer -->
+  <div class="verify" id="verifyDrawer" aria-hidden="true">
+    <div class="verify-head">
+      <div class="brand"><div class="title">豆瓣校对 · 工作台</div></div>
+      <div class="muted">提示：点击任意作品卡 → 打开侧滑层 → 在此处编辑并保存。<span class="kbd">Ctrl/⌘ + S</span> 保存。</div>
+      <button class="btn small" id="saveVerify">保存</button>
+      <button class="btn small" id="markVerified">标记已校对</button>
+      <button class="btn small" id="closeVerify">收起</button>
+    </div>
+    <div class="verify-body">
+      <div class="field">
+        <label>中文片名（以豆瓣为准）</label>
+        <input id="fZh" />
+      </div>
+      <div class="field">
+        <label>原片名</label>
+        <input id="fOri" />
+      </div>
+      <div class="field">
+        <label>出品/上映日期（以豆瓣为准，YYYY-MM-DD）</label>
+        <input id="fDate" placeholder="例如：2019-09-13" />
+      </div>
+      <div class="field">
+        <label>地区</label>
+        <input id="fRegion" placeholder="中国大陆/韩国/美国…" />
+      </div>
+      <div class="field">
+        <label>类型</label>
+        <input id="fType" placeholder="电影/剧集/纪录片…" />
+      </div>
+      <div class="field">
+        <label>豆瓣链接（可粘贴具体条目）</label>
+        <input id="fDouban" placeholder="https://movie.douban.com/subject/xxxxxxx/" />
+      </div>
+      <div class="field" style="grid-column:1 / -1;">
+        <label>备注</label>
+        <textarea id="fNote" placeholder="校对说明/版本差异/节庆首映等"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <footer class="container">
+    <div>© 2025 · “未成年人司法影视研究数据库” · 作者：Dr.Kurt。单页滚动 · 点击可互动。Level 1 分类 · Level 2 作品介绍/爆款原因/叙事视角 · Level 3 值得学习的技巧。</div>
+    <div style="margin-top:8px">数据最初来源：用户上传文档（用于搭建初始片单与标签，具体中文名与出品日期以豆瓣校对为准）。</div>
+  </footer>
+
+  <script>
+  // ========================= DATA & CONFIG =========================
+  const PERSPECTIVES = [
+    { key:'victim',   name:'受害者/幸存者视角', desc:'从受害者或其家庭出发呈现创伤与疗愈过程' },
+    { key:'prosecutor', name:'检察官/法官/律师视角', desc:'司法系统内部推进真相与裁判（检察、公诉、法庭）' },
+    { key:'police', name:'警察/侦探视角', desc:'刑侦或专案组推进调查，侦破与取证' },
+    { key:'parent', name:'家长/家庭视角', desc:'以父母/监护人为核心，探讨家庭与复原' },
+    { key:'school', name:'学校/老师视角', desc:'教育现场的创伤识别、干预与治愈' },
+    { key:'media',  name:'媒体/记者/调查者视角', desc:'调查报道或纪录式追踪，揭露系统性问题' },
+    { key:'perp',   name:'加害者/嫌疑人视角', desc:'从加害者或疑似加害者切入讨论伦理与矫治' },
+    { key:'ensemble', name:'群像/多视角', desc:'多线叙事、时间线交叉，呈现系统性全景' },
+    { key:'doc', name:'纪录片/非虚构', desc:'非虚构叙事，真实案件或人物采访' },
+  ];
+
+  // 初始作品库（可在“豆瓣校对模式”内修订并保存到 localStorage）
+  const INITIAL_DATA = [
+    {
+      id:'silenced-2011', zhTitle:'熔炉', originalTitle:'Silenced', releaseYear:2011, releaseDate:'', region:'韩国', type:'电影',
+      perspectives:['victim','media','ensemble'],
+      synopsis:'真实事件改编，揭露聋哑学校长期侵害：外来教师携手社工为孩子发声，引发全国震动。',
+      pros:['现实震撼力强','表演克制而有力','推动立法的社会影响'],
+      cons:['观感压抑','部分庭审段落简略'],
+      blockbusterReasons:['议题性强+真实案件','愤怒情绪与社会行动引爆'],
+      learnings:{
+        结构:['发现→曝光→诉讼→后果的四幕推进','以外来者为“观众入口”降低理解门槛','多次“小胜利-挫败”波形维持张力'],
+        人物:['正义方非完美英雄，有犹疑与代价','儿童表演走写实路线，避免工具化','反派多以“系统性权力”呈现而非个人恶'],
+        视听:['灰冷色调+长镜头营造压抑现实感','听障元素参与叙事（手语、静音片段）','配乐降低存在感，留空间给信息与情绪'],
+        节奏:['信息密度递进，庭审作为阶段性高潮','以“证据失效/证言反复”制造跌宕'],
+        价值:['明确“儿童优先、制度问责”立场','结尾不强行圆满但给出现实影响注脚'],
+        营销:['强调“改变社会的电影”标签','主创访谈聚焦制度层面，扩大公共讨论'],
+        合规:['敏感画面点到为止，靠暗示与结果呈现'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'hope-2013', zhTitle:'素媛', originalTitle:'Hope', releaseYear:2013, releaseDate:'', region:'韩国', type:'电影',
+      perspectives:['victim','parent'],
+      synopsis:'依据震惊社会的儿童性侵案改编，聚焦女孩与家庭的创伤与疗愈。',
+      pros:['以家庭为核心的温情表达','童演员出色','衡量正义与治愈的平衡感'],
+      cons:['对司法环节着墨较少','改写量刑具理想化'],
+      blockbusterReasons:['极致共情+治愈转向','“父爱陪伴”具强话题传播力'],
+      learnings:{
+        结构:['避开暴力呈现，专注事后疗愈','“伤痛→陪伴→重建”情感阶梯'],
+        人物:['父母的无力与成长并行','志愿者等善意配角构成“支撑网”'],
+        视听:['暖色与日常细节对冲沉重主题'],
+        节奏:['前半撕心裂肺，后半舒缓修复'],
+        价值:['强调“以人为本”的司法关怀'],
+        营销:['物料突出“希望/陪伴”的核心意象'],
+        合规:['以点代面处理创伤细节，降低触发性'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'angels-wear-white-2017', zhTitle:'嘉年华', originalTitle:'Angels Wear White', releaseYear:2017, releaseDate:'', region:'中国大陆', type:'电影',
+      perspectives:['victim','media','ensemble'],
+      synopsis:'海边小城未成年人侵害案件，从目击少女、受害家庭与公益律师多线展开。',
+      pros:['女性视角冷静克制','表演真实','社会现实质地强'],
+      cons:['节奏偏平','结局不圆满引争议'],
+      blockbusterReasons:['现实直面+女性叙事','国际影展口碑带动长尾'],
+      learnings:{
+        结构:['群像并行，证据线与生存线交织','“沉默-发声”的心路转变'],
+        人物:['目击者的道德困境强化代入','律师/媒体构成制度对照镜'],
+        视听:['固定镜头+环境声增强纪实感'],
+        节奏:['稳态推进，靠细节堆叠张力'],
+        价值:['揭露与呼吁并重，留白给观众判断'],
+        营销:['聚焦女性命运话题，扩大社媒讨论'],
+        合规:['未成年人形象保护，隐去直接暴力'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'better-days-2019', zhTitle:'少年的你', originalTitle:'Better Days', releaseYear:2019, releaseDate:'', region:'中国大陆', type:'电影',
+      perspectives:['victim','parent','school','ensemble'],
+      synopsis:'高考压力之下的校园霸凌事件，两个边缘少年的相互守护与救赎。',
+      pros:['双主演强表演','气质与现实话题兼具','叙事张力足'],
+      cons:['个别桥段理想化','删节导致信息缺口'],
+      blockbusterReasons:['“反霸凌”社会议题+顶流受众基础','强情绪场面催化口碑'],
+      learnings:{
+        结构:['“守护关系”驱动主线','警方线作为真相推进副线'],
+        人物:['“弱者守护弱者”的动机纯度','反派群体化呈现“群体恶”'],
+        视听:['手持与近距离特写传递窒息感'],
+        节奏:['悬疑与爱情双曲线并走互相提速'],
+        价值:['对旁观者冷漠与制度缺位的拷问'],
+        营销:['金句与名场面二次传播（剪刀手/雨中台词）'],
+        合规:['校园题材尺度拿捏，避免美化暴力'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'the-bad-kids-2020', zhTitle:'隐秘的角落', originalTitle:'The Bad Kids', releaseYear:2020, releaseDate:'', region:'中国大陆', type:'剧集',
+      perspectives:['ensemble','perp','victim','parent','police'],
+      synopsis:'三名孩子偶然拍下命案，从而与成年罪犯展开猫鼠博弈，家庭与成长阴影层层揭开。',
+      pros:['多线叙事成熟','反派塑造经典','氛围营造独特'],
+      cons:['结局争议','个别动机留白'],
+      blockbusterReasons:['悬疑强叙事+社会议题双驱动','“爬山吗”等符号级梗扩大传播'],
+      learnings:{
+        结构:['双主线（孩子/反派）平行交叉','信息差制造推进力'],
+        人物:['少年群像的复杂性与成长代价','反派“温和表象+冷酷内里”反差'],
+        视听:['潮湿南城质感+童谣反差音乐'],
+        节奏:['每集抛新钩，结尾反转稳住追更'],
+        价值:['原生家庭的系统性反思'],
+        营销:['符号化台词/动作的短视频扩散'],
+        合规:['未成年角色涉险戏分级把控（暗示代替直拍）'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'detachment-2011', zhTitle:'超脱', originalTitle:'Detachment', releaseYear:2011, releaseDate:'', region:'美国', type:'电影',
+      perspectives:['school','victim','parent'],
+      synopsis:'代课老师在问题中学里直面群体创伤，同时疗愈自我。',
+      pros:['主演表演极具张力','风格化视听','教育议题厚重'],
+      cons:['碎片化叙事导致割裂感','基调偏压抑'],
+      blockbusterReasons:['教师题材共鸣+艺术表达','片段式名场面易二创传播'],
+      learnings:{
+        结构:['散点群像串联主角心路','采访式独白穿插加深主题'],
+        人物:['“不介入”到“拥抱责任”的转变'],
+        视听:['粉笔画/蒙太奇等诗性符号'],
+        节奏:['小高潮密集但强度控制适中'],
+        价值:['强调Empathy共情作为教育之本'],
+        营销:['教师节档期/教育话题联动'],
+        合规:['涉及未成年敏感议题使用象征替代直观呈现'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'les-choristes-2004', zhTitle:'放牛班的春天', originalTitle:'Les Choristes', releaseYear:2004, releaseDate:'', region:'法国', type:'电影',
+      perspectives:['school','victim','parent'],
+      synopsis:'音乐老师以合唱团唤醒问题少年的自信与善意。',
+      pros:['音乐动人','师生情真挚','普世价值'],
+      cons:['冲突相对温和','反派校长刻画单薄'],
+      blockbusterReasons:['音乐疗愈+家庭友好观影','经久不衰的歌曲传播力'],
+      learnings:{
+        结构:['“到来-建立-挫折-告别”清晰四段'],
+        人物:['老师“普通人”设定增强可信度'],
+        视听:['暖黄怀旧影调+合唱声场设计'],
+        节奏:['情绪层层递进，避免过度煽情'],
+        价值:['反惩罚式教育，强调鼓励与尊重'],
+        营销:['OST即传播资产，线下合唱互动'],
+        合规:['校园合唱拍摄与未成年人肖像合规'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'spotlight-2015', zhTitle:'聚焦', originalTitle:'Spotlight', releaseYear:2015, releaseDate:'', region:'美国', type:'电影',
+      perspectives:['media','doc','ensemble'],
+      synopsis:'记者团队揭开教会上千起神职人员侵害儿童的系统性掩盖。',
+      pros:['群像写实','剧作扎实','社会影响广泛'],
+      cons:['情绪克制','角色内心戏少'],
+      blockbusterReasons:['奥斯卡获奖拉动大众关注','调查叙事代入感强'],
+      learnings:{
+        结构:['过程电影：线索→阻力→突破','以“名单/数量”作为叙事炸点'],
+        人物:['团队协作替代“单英雄”，更可信'],
+        视听:['低饱和纪实，弱化配乐呈现事实'],
+        节奏:['每步推进有信息增量，避免空转'],
+        价值:['监督权力、鼓励发声'],
+        营销:['话题聚焦“真相与新闻自由”'],
+        合规:['避免刻画具体受害细节，尊重隐私'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'doubt-2008', zhTitle:'疑犯', originalTitle:'Doubt', releaseYear:2008, releaseDate:'', region:'美国', type:'电影',
+      perspectives:['media','ensemble','perp'],
+      synopsis:'修女与神父围绕“是否侵害学生”的怀疑与对峙，真相留白。',
+      pros:['表演神仙打架','台词密度高','伦理讨论回味长'],
+      cons:['不给答案或令部分观众挫败','舞台感较强'],
+      blockbusterReasons:['表演对决+伦理争议','后劲强的开放式话题'],
+      learnings:{
+        结构:['证据模糊下的“怀疑叙事”','以对话做战场'],
+        人物:['双方都“有理”，增强复杂度'],
+        视听:['构图压迫与风声意象制造不安'],
+        节奏:['信息投喂-否定-再投喂的螺旋'],
+        价值:['提醒证据观：保护儿童亦需程序正义'],
+        营销:['主创奖项与金句传播'],
+        合规:['宗教议题表达把握边界与尊重'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'unbelievable-2019', zhTitle:'难以置信', originalTitle:'Unbelievable', releaseYear:2019, releaseDate:'', region:'美国', type:'剧集',
+      perspectives:['victim','police','ensemble'],
+      synopsis:'女孩报案被误判为谎言，数年后女警联手侦破连环案为其正名。',
+      pros:['女性视角专业细腻','三主演表演出色','流程写实'],
+      cons:['节奏平实','令人愤怒的失职引情绪波动'],
+      blockbusterReasons:['真实改编+社会教育意义','双线并进的叙事张力'],
+      learnings:{
+        结构:['受害者线与侦破线双螺旋合流','“方法论”细节驱动'],
+        人物:['同理心执法者与冷漠执法的对照'],
+        视听:['冷静摄影+细节特写呈现创伤后反应'],
+        节奏:['每案细节做“拼图”，逐步逼近真相'],
+        价值:['相信与倾听受害者'],
+        营销:['媒体深度报道联动推广'],
+        合规:['隐私保护与敏感画面严格克制'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'juvenile-justice-2022', zhTitle:'少年法庭', originalTitle:'Juvenile Justice', releaseYear:2022, releaseDate:'', region:'韩国', type:'剧集',
+      perspectives:['prosecutor'],
+      synopsis:'以少年审判法官为主角，案件串联对“严惩/感化”的制度博弈。',
+      pros:['议题强','主演气场强','程序细节扎实'],
+      cons:['人物立场前期极端','单元模式情感线弱'],
+      blockbusterReasons:['高强度社会讨论','法庭戏张力与口碑驱动'],
+      learnings:{
+        结构:['单元案件串主线心态变化'],
+        人物:['“立场转变”是角色成长抓手'],
+        视听:['庄重法庭场景+冷峻配色'],
+        节奏:['法理与人情交替推进'],
+        价值:['平衡惩罚与教育'],
+        营销:['围绕“少年法修订”舆情话题'],
+        合规:['未成年犯罪报道与形象保护边界'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'stranger-2017', zhTitle:'秘密森林', originalTitle:'Stranger', releaseYear:2017, releaseDate:'', region:'韩国', type:'剧集',
+      perspectives:['prosecutor','police','ensemble'],
+      synopsis:'冷峻检察官与女警携手查办内部腐败与连环命案。',
+      pros:['剧作缜密','人物群像立体','氛围成熟'],
+      cons:['信息量大观感偏冷','需高专注度'],
+      blockbusterReasons:['口碑顶级“神剧”','检警权力斗争的稀缺视角'],
+      learnings:{
+        结构:['线索网状推进','权力结构作为“反派”'],
+        人物:['主角“低情绪高理性”人设抓人'],
+        视听:['冷色系统+空间压迫感'],
+        节奏:['每集有发现，结尾留悬'],
+        价值:['制度透明与监督'],
+        营销:['口碑带动+二季延展'],
+        合规:['涉职场与办案流程准确性校核'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'defendant-2017', zhTitle:'被告人', originalTitle:'Defendant', releaseYear:2017, releaseDate:'', region:'韩国', type:'剧集',
+      perspectives:['prosecutor','perp','ensemble'],
+      synopsis:'精英检察官蒙冤入狱失忆自证清白，对抗权贵财阀。',
+      pros:['爽感强','反派压迫感强','节奏紧凑'],
+      cons:['越狱与反击桥段夸张','结局收束略快'],
+      blockbusterReasons:['高能情节+情感动机强','反派强度驱动追剧'],
+      learnings:{
+        结构:['“蒙冤→求生→反击”三段式'],
+        人物:['父女线强化情感支点'],
+        视听:['监狱/法庭空间对比营造转折'],
+        节奏:['几乎每集反转，保障粘性'],
+        价值:['司法正义迟到不缺席'],
+        营销:['反派人设话题化运营'],
+        合规:['越狱暴力等镜头控制尺度'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:"witchs-court-2017", zhTitle:'魔女的法庭', originalTitle:"Witch's Court", releaseYear:2017, releaseDate:'', region:'韩国', type:'剧集',
+      perspectives:['prosecutor','victim'],
+      synopsis:'强势女检察官转入未成年人与性犯罪专组，在一案案中完成价值转变。',
+      pros:['女性成长线清晰','节奏快','案件现实取材'],
+      cons:['个别反派脸谱化','部分推进理想化'],
+      blockbusterReasons:['女性检察官形象鲜明','性侵话题引关注'],
+      learnings:{
+        结构:['双线：单元案件+母亲失踪主线'],
+        人物:['“功利→良知觉醒”的人物弧'],
+        视听:['轻快剪辑降低沉重度'],
+        节奏:['两集一案保持密度'],
+        价值:['弱者保护与制度改良'],
+        营销:['女性题材受众聚集'],
+        合规:['案件细节处理与受害者保护'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'the-long-night-2020', zhTitle:'沉默的真相', originalTitle:'The Long Night', releaseYear:2020, releaseDate:'', region:'中国大陆', type:'剧集',
+      perspectives:['prosecutor','media','ensemble'],
+      synopsis:'检察官与良知人士十年追凶，双时空揭露权力遮蔽下的真相。',
+      pros:['结构精巧','价值切中现实','演技群像强'],
+      cons:['个别情节理想化','信息复杂需耐心'],
+      blockbusterReasons:['“迟到的正义”情感爆发','国产悬疑口碑标杆'],
+      learnings:{
+        结构:['双时间线交错对照','真相迟到的情绪蓄力'],
+        人物:['牺牲与传承的群体英雄'],
+        视听:['暗色系统+压抑声场'],
+        节奏:['线索逐步拼图，终局集中释放'],
+        价值:['监督权力与制度改良'],
+        营销:['名场面/台词二创扩散'],
+        合规:['涉案真实感与尺度平衡'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'out-of-court-2022', zhTitle:'庭外', originalTitle:'Out of Court', releaseYear:2022, releaseDate:'', region:'中国大陆', type:'剧集',
+      perspectives:['prosecutor','ensemble'],
+      synopsis:'“盲区”“落水者”双单元，法官与律师两条时间线拼出案件全貌。',
+      pros:['结构创新','专业细节扎实','双主角互补'],
+      cons:['前后半联系需耐心','情感线弱'],
+      blockbusterReasons:['双单元结构差异化','法律职业真实度拉好感'],
+      learnings:{
+        结构:['双主角/双时空互证真相'],
+        人物:['法庭内外两种“正义力量”协同'],
+        视听:['空间与地域反差形成质感'],
+        节奏:['72小时限时任务+慢烧调查'],
+        价值:['程序正义与实体正义的平衡'],
+        营销:['结构卖点清晰，物料可分案运营'],
+        合规:['程序细节请法顾把关'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'in-the-name-of-the-people-2017', zhTitle:'人民的名义', originalTitle:'In the Name of the People', releaseYear:2017, releaseDate:'', region:'中国大陆', type:'剧集',
+      perspectives:['prosecutor','ensemble'],
+      synopsis:'反腐风暴席卷政法系统，检察体系与权力网络正面交锋。',
+      pros:['信息量大','群像鲜明','现实感强'],
+      cons:['部分段落拖沓','宣传感争议'],
+      blockbusterReasons:['稀缺题材+强阵容','金句与角色出圈'],
+      learnings:{
+        结构:['层层拔葱推进大案结构'],
+        人物:['反派群像立体，正面人物多维'],
+        视听:['纪实风格强化真实度'],
+        节奏:['多线并行，穿插庭审/调查节点'],
+        价值:['反腐倡廉与法治信心'],
+        营销:['角色IP化（达康书记等）'],
+        合规:['政治题材口径统一与审查合规'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'the-bottom-line-2022', zhTitle:'底线', originalTitle:'The Bottom Line', releaseYear:2022, releaseDate:'', region:'中国大陆', type:'剧集',
+      perspectives:['prosecutor'],
+      synopsis:'法院群像展现新时代审判工作，涵盖多个社会热点案件。',
+      pros:['专业性强','民生议题广','节奏明快'],
+      cons:['个别结局理想化','情节巧合'],
+      blockbusterReasons:['“全景法院”稀缺视角','热点议题带动讨论'],
+      learnings:{
+        结构:['单元案件贯穿三代法官成长'],
+        人物:['导师-徒弟传承线催化情感'],
+        视听:['庄重审判空间+民生场景对照'],
+        节奏:['一案一峰值，观感友好'],
+        价值:['司法为民与底线思维'],
+        营销:['热点议题预热+法官口述花絮'],
+        合规:['真实案例改编需匿名化处理'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'acs-oj-2016', zhTitle:'美国犯罪故事：公诉辛普森', originalTitle:'The People v. O.J. Simpson', releaseYear:2016, releaseDate:'', region:'美国', type:'剧集',
+      perspectives:['prosecutor','ensemble','media'],
+      synopsis:'世纪审判全景再现：控辩角力、舆论与种族议题交织。',
+      pros:['群像演技强','戏剧张力足','历史再现度高'],
+      cons:['结局已知降低悬念','人物动机有戏剧化争议'],
+      blockbusterReasons:['真实大案改编自带话题','控辩对决满足法庭爽点'],
+      learnings:{
+        结构:['群像多视角拼接历史全景'],
+        人物:['检方困境与辩方策略的拉扯'],
+        视听:['复古服化道完成年代质感'],
+        节奏:['关键节点（手套/陪审团）作为爆点'],
+        价值:['程序正义与舆论影响的反思'],
+        营销:['节点化物料推送复盘历史'],
+        合规:['真实人物肖像与版权合规'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'the-accused-1988', zhTitle:'被告', originalTitle:'The Accused', releaseYear:1988, releaseDate:'', region:'美国', type:'电影',
+      perspectives:['victim','prosecutor'],
+      synopsis:'女性遭集体性暴力后在检方协助下寻求正义。',
+      pros:['主题鲜明','法庭段落有力'],
+      cons:['年代感强','刻画方式相对直接'],
+      blockbusterReasons:['奥斯卡演技+受害者权利话题'],
+      learnings:{
+        结构:['从受害到取证到审判的清晰流程'],
+        人物:['检察官与受害者的信任重建'],
+        视听:['避免猎奇镜头，强调证词与程序'],
+        节奏:['庭审交锋制造高潮'],
+        价值:['“指责受害者”偏见的反击'],
+        营销:['典型场景/台词的教育用途'],
+        合规:['再现暴力需极度谨慎'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'mysterious-skin-2004', zhTitle:'神秘肌肤', originalTitle:'Mysterious Skin', releaseYear:2004, releaseDate:'', region:'美国', type:'电影',
+      perspectives:['victim','perp'],
+      synopsis:'两名男孩童年遭侵害，成年后走向截然不同的人生。',
+      pros:['心理刻画深刻','表演出众'],
+      cons:['触发性强','观影门槛高'],
+      blockbusterReasons:['边缘题材+艺术表达强'],
+      learnings:{
+        结构:['双主角平行对照疗愈路径'],
+        人物:['不把受害者类型化，呈现复杂人性'],
+        视听:['梦魇化意象呈现创伤记忆'],
+        节奏:['静水深流式推进'],
+        价值:['强调个体化康复与支持系统'],
+        营销:['艺术院线与口碑发酵'],
+        合规:['分级提示与放映场景选择'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'the-tale-2018', zhTitle:'失常', originalTitle:'The Tale', releaseYear:2018, releaseDate:'', region:'美国', type:'电影',
+      perspectives:['victim'],
+      synopsis:'女性回望童年遭遇，重构记忆直面真相。',
+      pros:['自传式真实','结构大胆','表演细腻'],
+      cons:['非线性提高门槛','极具触发性'],
+      blockbusterReasons:['#MeToo语境下的共鸣'],
+      learnings:{
+        结构:['记忆与现实交错，质询“可靠叙述”'],
+        人物:['成年自我与童年自我“对话”'],
+        视听:['克制镜头避免二次伤害'],
+        节奏:['情绪螺旋式深入'],
+        价值:['女性主体叙述与自我定义'],
+        营销:['话题与媒体深访联动'],
+        合规:['演员保护与拍摄协议严格管控'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'trust-2010', zhTitle:'信任', originalTitle:'Trust', releaseYear:2010, releaseDate:'', region:'美国', type:'电影',
+      perspectives:['victim','parent','police'],
+      synopsis:'少女遭遇网络掠夺者，家庭与警方共同面对创伤。',
+      pros:['现实警示意义强','家庭线真挚'],
+      cons:['后段处理略快'],
+      blockbusterReasons:['“网络安全”时代议题'],
+      learnings:{
+        结构:['案发后处理流程+家庭修复线'],
+        人物:['父母的愤怒与无力并存'],
+        视听:['日常质感对冲主题沉重'],
+        节奏:['调查与心理治疗交替推进'],
+        价值:['网络风险教育的重要性'],
+        营销:['校园/社区安全讲座联动'],
+        合规:['未成年人隐私保护'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'hard-candy-2005', zhTitle:'糖果屋', originalTitle:'Hard Candy', releaseYear:2005, releaseDate:'', region:'美国', type:'电影',
+      perspectives:['victim','perp'],
+      synopsis:'少女以身试险“钓出”嫌疑掠夺者，展开心理与道德的博弈。',
+      pros:['双人戏张力强','空间调度巧妙'],
+      cons:['伦理争议','结局见仁见智'],
+      blockbusterReasons:['高概念对峙+小成本高回报'],
+      learnings:{
+        结构:['密室对峙型两人舞台'],
+        人物:['模糊正邪边界引发讨论'],
+        视听:['局促空间强化压迫感'],
+        节奏:['节拍紧密，持续升级'],
+        价值:['私力救济的边界'],
+        营销:['“反转/对峙”作为核心卖点'],
+        合规:['暴力镜头克制、以心理惊悚代替'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'svu-1999', zhTitle:'法律与秩序：特殊受害者', originalTitle:'Law & Order: SVU', releaseYear:1999, releaseDate:'', region:'美国', type:'剧集',
+      perspectives:['police','prosecutor','doc'],
+      synopsis:'围绕性侵与未成年人受害的长期剧集，每集一个案例、警方调查与检方起诉双线推进。',
+      pros:['稳定模式可持续','教育意义强'],
+      cons:['长期观看套路化','个别集数煽情'],
+      blockbusterReasons:['IP长寿+公共议题价值'],
+      learnings:{
+        结构:['警探调查/检方起诉“双段式”结构'],
+        人物:['长期角色成长+职业群像'],
+        视听:['程序戏真实感优先'],
+        节奏:['单集闭环，季节主线适度'],
+        价值:['制度运作与个案关怀兼顾'],
+        营销:['热点改编与社会合作（公益/热线）'],
+        合规:['案例匿名化与受害者保护'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    },
+    {
+      id:'prosecution-elite-2023', zhTitle:'公诉', originalTitle:'Prosecution Elite', releaseYear:2023, releaseDate:'', region:'中国大陆', type:'剧集',
+      perspectives:['prosecutor','police'],
+      synopsis:'女检察官聚焦网络犯罪与未成年人保护等案件。',
+      pros:['现实题材热门','案件类型新'],
+      cons:['说教感时现','模式化风险'],
+      blockbusterReasons:['流量演员+现实议题组合'],
+      learnings:{
+        结构:['单元案件+检务日常'],
+        人物:['职业女性成长路线'],
+        视听:['现代场景与科技犯罪可视化'],
+        节奏:['高密度信息投喂'],
+        价值:['网络安全与司法保护'],
+        营销:['普法联动与话题策划'],
+        合规:['真实案例改编与技术呈现合规'],
+      },
+      doubanVerified:false, doubanUrl:'', doubanNote:''
+    }
+  ];
+
+  // ========================= STATE =========================
+  let DATA = loadData();
+  let currentWork = null;
+  let verifyMode = false;
+
+  function loadData(){
+    const saved = localStorage.getItem('drkurt_data_v1');
+    if(saved){
+      try{ return JSON.parse(saved); }catch(e){ console.warn('数据解析失败，使用内置数据'); }
+    }
+    return INITIAL_DATA;
+  }
+  function saveData(){
+    localStorage.setItem('drkurt_data_v1', JSON.stringify(DATA));
+  }
+
+  // ========================= RENDER: Categories (Level 1) =========================
+  const catGrid = document.getElementById('catGrid');
+  const lists = document.getElementById('lists');
+
+  function countByPerspective(){
+    const map = {};
+    PERSPECTIVES.forEach(p=> map[p.key] = 0);
+    for(const w of DATA){
+      for(const k of w.perspectives) if(map[k]!==undefined) map[k]++;
+    }
+    return map;
+  }
+
+  function renderCategories(){
+    const counts = countByPerspective();
+    catGrid.innerHTML = '';
+    PERSPECTIVES.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'cat';
+      card.dataset.key = p.key;
+      card.innerHTML = `
+        <div class="count">${counts[p.key]||0} 部</div>
+        <div class="name">${p.name}</div>
+        <div class="desc">${p.desc}</div>
+        <svg viewBox="0 0 200 200" fill="none"><circle cx="100" cy="100" r="60" stroke="white" stroke-width="10"/></svg>
+      `;
+      card.addEventListener('click', () => scrollToList(p.key));
+      catGrid.appendChild(card);
+    });
+  }
+
+  function scrollToList(key){
+    const el = document.getElementById('list-'+key);
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); el.classList.add('pulse'); setTimeout(()=>el.classList.remove('pulse'), 800); }
+  }
+
+  // ========================= RENDER: Lists (Level 2) =========================
+  function renderLists(filterText=''){
+    lists.innerHTML = '';
+    PERSPECTIVES.forEach(p=>{
+      // Gather works
+      let works = DATA.filter(w => w.perspectives.includes(p.key));
+      if(filterText){
+        const q = filterText.trim().toLowerCase();
+        works = works.filter(w => (w.zhTitle+w.originalTitle+(w.synopsis||'')+(w.blockbusterReasons||[]).join(' ')).toLowerCase().includes(q));
+      }
+      // Skip empty categories entirely
+      if(works.length === 0) return;
+
+      const section = document.createElement('div');
+      section.id = 'list-'+p.key;
+      section.className = 'section';
+      section.innerHTML = `
+        <div class="container">
+          <h2>${p.name}</h2>
+          <div class="films"></div>
+        </div>
+      `;
+      const grid = section.querySelector('.films');
+      works.forEach(w => grid.appendChild(renderFilmCard(w)));
+      lists.appendChild(section);
+    });
+  }
+
+  function renderFilmCard(w){
+    const el = document.createElement('div');
+    el.className = 'film';
+    el.id = 'work-'+w.id;
+    const verified = !!w.doubanVerified;
+    const tagHtml = (w.perspectives||[]).map(k => `<span class="tag">${nameOfPersp(k)}</span>`).join('');
+    el.innerHTML = `
+      <div class="badge ${verified?'ok':'wait'}">${verified?'已校对':'待校对'}</div>
+      <div class="title">${(w.zhTitle||w.originalTitle||"（未填）")} <span class="muted">/ ${(w.originalTitle||w.zhTitle||"（未填）")}</span></div>
+      <div class="meta">
+        <span>${w.type||''}</span> · <span>${w.region||''}</span> · <span>${w.releaseYear || ''}${w.releaseDate? ' · '+w.releaseDate : ''}</span>
+      </div>
+      <div class="tags">${tagHtml}</div>
+      <div class="desc">${w.synopsis||''}</div>
+    `;
+    el.addEventListener('click', ()=> openWork(w.id));
+    return el;
+  }
+
+  function nameOfPersp(k){
+    const p = PERSPECTIVES.find(x=>x.key===k);
+    return p ? p.name : k;
+  }
+
+  // ========================= PANEL: Work (Level 2) =========================
+  const workPanel = document.getElementById('workPanel');
+  const workTitle = document.getElementById('workTitle');
+  const workKv = document.getElementById('workKv');
+  const workSynopsis = document.getElementById('workSynopsis');
+  const workBoom = document.getElementById('workBoom');
+  const workPros = document.getElementById('workPros');
+  const workCons = document.getElementById('workCons');
+  const workPersp = document.getElementById('workPersp');
+  const doubanLink = document.getElementById('doubanLink');
+  const verifyFlag = document.getElementById('verifyFlag');
+
+  function openWork(id){
+    const w = DATA.find(x=>x.id===id);
+    if(!w) return;
+    currentWork = w;
+    workTitle.textContent = `${(w.zhTitle||w.originalTitle||'')} / ${(w.originalTitle||w.zhTitle||'')}`;
+    doubanLink.href = w.doubanUrl || ('https://www.douban.com/search?q=' + encodeURIComponent(w.zhTitle || w.originalTitle || ''));
+    verifyFlag.textContent = w.doubanVerified ? '已校对' : '待校对';
+    verifyFlag.style.color = w.doubanVerified ? '#9CE8A6' : '#FFD782';
+
+    workKv.innerHTML = `
+      <div class="kvbox">
+        <div class="k">类型 / 地区</div><div class="v">${w.type||'-'} · ${w.region||'-'}</div>
+      </div>
+      <div class="kvbox">
+        <div class="k">出品/上映</div><div class="v">${w.releaseYear || ''} ${w.releaseDate ? '· '+w.releaseDate : ''}</div>
+      </div>
+      <div class="kvbox">
+        <div class="k">豆瓣</div><div class="v">${w.doubanUrl ? `<a href="${w.doubanUrl}" target="_blank" rel="noopener">${w.doubanUrl}</a>` : '（未填，点击左上“豆瓣搜索”）'}</div>
+      </div>
+      <div class="kvbox">
+        <div class="k">备注</div><div class="v">${w.doubanNote || '—'}</div>
+      </div>
+    `;
+    workSynopsis.textContent = w.synopsis || '';
+
+    function fillBullets(el, arr){
+      el.innerHTML = '';
+      (arr||[]).forEach(t => {
+        const item = document.createElement('div');
+        item.className='li'; item.textContent = t; el.appendChild(item);
+      });
+      if((arr||[]).length===0){ el.innerHTML = '<div class="muted">—</div>'; }
+    }
+    fillBullets(workBoom, w.blockbusterReasons);
+    fillBullets(workPros, w.pros);
+    fillBullets(workCons, w.cons);
+
+    workPersp.innerHTML = (w.perspectives||[]).map(k=> `<span class="tag">${nameOfPersp(k)}</span>`).join('');
+
+    workPanel.classList.add('open');
+    if(verifyMode){ bindVerifyForm(w); }
+  }
+
+  document.getElementById('closeWork').addEventListener('click', ()=> workPanel.classList.remove('open'));
+
+  // Copy work anchor
+  document.getElementById('copyLink').addEventListener('click', ()=>{
+    if(!currentWork) return;
+    const url = location.origin + location.pathname + '#work-'+currentWork.id;
+    navigator.clipboard.writeText(url).then(()=>{
+      alert('已复制作品锚点链接');
+    });
+  });
+
+  // ========================= PANEL: Skills (Level 3) =========================
+  const skillPanel = document.getElementById('skillPanel');
+  const skillBody = document.getElementById('skillBody');
+  const SKILL_KEYS = ['结构','人物','视听','节奏','价值','营销','合规'];
+
+  function openSkills(){
+    if(!currentWork) return;
+    const s = currentWork.learnings || {};
+    skillBody.innerHTML = '';
+    SKILL_KEYS.forEach(k => {
+      const items = s[k] || [];
+      const box = document.createElement('details');
+      box.open = true;
+      const sum = document.createElement('summary');
+      sum.className = 'h3'; sum.textContent = k;
+      box.appendChild(sum);
+
+      const list = document.createElement('div'); list.className = 'bullets';
+      if(items.length===0) list.innerHTML = '<div class="muted">—</div>';
+      items.forEach(t => {
+        const li = document.createElement('div'); li.className='li'; li.textContent = t; list.appendChild(li);
+      });
+      box.appendChild(list);
+      skillBody.appendChild(box);
+    });
+    skillPanel.classList.add('open');
+  }
+  document.getElementById('openSkills').addEventListener('click', openSkills);
+  document.getElementById('closeSkill').addEventListener('click', ()=> skillPanel.classList.remove('open'));
+  document.getElementById('collapseAll').addEventListener('click', ()=>{
+    skillBody.querySelectorAll('details').forEach(d => d.open = false);
+  });
+  document.getElementById('expandAll').addEventListener('click', ()=>{
+    skillBody.querySelectorAll('details').forEach(d => d.open = true);
+  });
+
+  // ========================= VERIFY WORKFLOW =========================
+  const verifyDrawer = document.getElementById('verifyDrawer');
+  const toggleVerify = document.getElementById('toggleVerify');
+  const closeVerify = document.getElementById('closeVerify');
+  const saveVerify = document.getElementById('saveVerify');
+  const markVerified = document.getElementById('markVerified');
+  const fZh = document.getElementById('fZh');
+  const fOri = document.getElementById('fOri');
+  const fDate = document.getElementById('fDate');
+  const fRegion = document.getElementById('fRegion');
+  const fType = document.getElementById('fType');
+  const fDouban = document.getElementById('fDouban');
+  const fNote = document.getElementById('fNote');
+
+  function bindVerifyForm(w){
+    fZh.value = w.zhTitle || '';
+    fOri.value = w.originalTitle || '';
+    fDate.value = w.releaseDate || '';
+    fRegion.value = w.region || '';
+    fType.value = w.type || '';
+    fDouban.value = w.doubanUrl || '';
+    fNote.value = w.doubanNote || '';
+  }
+  function saveVerifyForm(){
+    if(!currentWork) return;
+    currentWork.zhTitle = fZh.value.trim();
+    currentWork.originalTitle = fOri.value.trim();
+    currentWork.releaseDate = fDate.value.trim();
+    currentWork.region = fRegion.value.trim();
+    currentWork.type = fType.value.trim();
+    currentWork.doubanUrl = fDouban.value.trim();
+    currentWork.doubanNote = fNote.value.trim();
+    saveData();
+    renderLists(document.getElementById('search').value || '');
+    openWork(currentWork.id);
+  }
+  function setVerified(v=true){
+    if(!currentWork) return;
+    currentWork.doubanVerified = !!v;
+    saveData();
+    renderLists(document.getElementById('search').value || '');
+    openWork(currentWork.id);
+  }
+
+  toggleVerify.addEventListener('click', ()=>{
+    verifyMode = !verifyMode;
+    if(verifyMode){
+      verifyDrawer.classList.add('open');
+      toggleVerify.querySelector('.dot').style.background = 'var(--ok)';
+      if(currentWork) bindVerifyForm(currentWork);
+    }else{
+      verifyDrawer.classList.remove('open');
+      toggleVerify.querySelector('.dot').style.background = 'var(--tint)';
+    }
+  });
+  closeVerify.addEventListener('click', ()=>{
+    verifyMode = false; verifyDrawer.classList.remove('open');
+    toggleVerify.querySelector('.dot').style.background = 'var(--tint)';
+  });
+  saveVerify.addEventListener('click', saveVerifyForm);
+  markVerified.addEventListener('click', ()=> setVerified(true));
+  window.addEventListener('keydown', (e)=>{
+    if((e.ctrlKey || e.metaKey) && e.key.toLowerCase()==='s'){ e.preventDefault(); saveVerifyForm(); }
+  });
+
+  // ========================= SEARCH / IMPORT / EXPORT =========================
+  const search = document.getElementById('search');
+  search.addEventListener('input', ()=> renderLists(search.value || ''));
+
+  document.getElementById('scrollCats').addEventListener('click', ()=>{
+    document.getElementById('categories').scrollIntoView({behavior:'smooth'});
+  });
+
+  const exportBtn = document.getElementById('exportBtn');
+  exportBtn.addEventListener('click', ()=>{
+    const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = '未成年人司法影视_研究库.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  const importFile = document.getElementById('importFile');
+  importFile.addEventListener('change', (e)=>{
+    const file = e.target.files?.[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      try{
+        const obj = JSON.parse(ev.target.result);
+        if(Array.isArray(obj)){
+          DATA = obj; saveData();
+          renderCategories(); renderLists(search.value || '');
+          alert('导入成功！');
+        }else{
+          alert('JSON 格式不正确（应为数组）');
+        }
+      }catch(err){ alert('解析失败：'+err.message); }
+    };
+    reader.readAsText(file, 'utf-8');
+  });
+
+  // ========================= INIT =========================
+  function init(){
+    renderCategories();
+    renderLists();
+    // Deep link to a work card by hash
+    if(location.hash.startsWith('#work-')){
+      const id = location.hash.replace('#work-','');
+      setTimeout(()=> openWork(id), 300);
+      const card = document.getElementById('work-'+id);
+      if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }
+  init();
+  </script>
+</body>
+</html>
